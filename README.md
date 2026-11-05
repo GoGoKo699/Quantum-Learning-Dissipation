@@ -8,4 +8,4 @@ The proposed comparison is between adaptive classical records and a bounded cohe
 - [Closest-work and priority audit](references/PRIORITY.md)
 - [Proof and reproducibility plan](verification/PLAN.md)
 
-**Current status:** initial scientific scoping. No theorem, numerical verification, or journal-readiness claim has been established in this repository. An educational anchor and 30-milestone learning route remain to be selected and developed.
+**Current status:** initial scientific scoping. No theorem, numerical verification, or journal-readiness claim has been established in this repository. The educational anchor is John Watrous, *The Theory of Quantum Information* (2018). See the [source bridge](learning/WATROUS_BRIDGE.md) and [30 scientific milestones](learning/MILESTONES.md). Detailed proof development remains pending.
