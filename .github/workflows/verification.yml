@@ -2,13 +2,13 @@ name: Scientific verification
 on:
   pull_request:
   push:
-    branches: [main, 'research/**']
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   science:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
           path: evidence/
           if-no-files-found: error
   hosted:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -41,58 +41,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install read-only browser dependencies
+      - name: Install pinned read-only browser dependencies
         run: |
           npm install --prefix "$RUNNER_TEMP/browser-deps" playwright@1.56.1 mathjax-full@3.2.1
           "$RUNNER_TEMP/browser-deps/node_modules/.bin/playwright" install --with-deps chromium
-      - name: Capture hosted source and screenshots
+      - name: Verify source-bound hosted mathematics at both widths
         env:
           NODE_PATH: ${{ runner.temp }}/browser-deps/node_modules
           SOURCE_REPOSITORY: ${{ github.repository }}
         run: |
-          node <<'JS'
-          const fs=require('node:fs'),cp=require('node:child_process');
-          const {chromium}=require('playwright');
-          (async()=>{
-            const revision=cp.execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
-            const tree=cp.execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim();
-            const paths=cp.execFileSync('git',['ls-tree','-r','--name-only','HEAD'],{encoding:'utf8'}).trim().split('\n').filter(p=>p.endsWith('.md'));
-            fs.mkdirSync('hosted-evidence',{recursive:true});
-            const browser=await chromium.launch();
-            const report={revision,tree,repository:process.env.SOURCE_REPOSITORY,captured_at:new Date().toISOString(),scope:'Hosted HTML, complete accessible MathML and screenshots. Structural source comparison and visual review are separate.',pages:[],failures:[]};
-            try {
-              for(const width of [1440,760]){
-                const context=await browser.newContext({viewport:{width,height:1000},colorScheme:'light'});
-                try {
-                  for(let i=0;i<paths.length;i++){
-                    const path=paths[i],page=await context.newPage();
-                    const url=`https://github.com/${process.env.SOURCE_REPOSITORY}/blob/${revision}/${path}`;
-                    const prefix=String(i+1).padStart(3,'0')+'-'+width;
-                    try {
-                      const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
-                      if(response.status()!==200||page.url()!==url) throw new Error('Unexpected hosted response '+response.status()+' '+page.url());
-                      const article=page.locator('article.markdown-body').first();
-                      await article.waitFor({state:'visible',timeout:30000});
-                      await page.evaluate(async()=>{for(let y=0;y<document.body.scrollHeight;y+=800){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,40));}window.scrollTo(0,0);});
-                      await page.waitForTimeout(1000);
-                      const capture=await article.evaluate(root=>({text:root.innerText,math:[...root.querySelectorAll('math')].map(m=>m.outerHTML),errors:[...root.querySelectorAll('merror,.katex-error,[data-mjx-error],math-renderer .flash-error')].map(e=>e.textContent)}));
-                      const html=prefix+'.html',png=prefix+'.png';
-                      fs.writeFileSync('hosted-evidence/'+html,await page.content());
-                      await page.screenshot({path:'hosted-evidence/'+png,fullPage:true});
-                      report.pages.push({path,url,width,html,screenshot:png,...capture});
-                      if(capture.errors.length) report.failures.push(path+': renderer error');
-                    } catch(error){report.failures.push(path+' at '+width+': '+String(error));throw error;}
-                    finally {await page.close();}
-                  }
-                } finally {await context.close();}
-              }
-            } finally {
-              await browser.close();
-              fs.writeFileSync('hosted-evidence/capture.json',JSON.stringify(report,null,2)+'\n');
-            }
-            if(report.failures.length) process.exitCode=1;
-          })().catch(error=>{console.error(error);process.exitCode=1;});
-          JS
+          node --check verification/rendering/capture_hosted_math.cjs
+          python3 -m py_compile verification/rendering/check_rendered_math.py
+          node verification/rendering/capture_hosted_math.cjs \
+            --root . --repository "$SOURCE_REPOSITORY" \
+            --revision "$(git rev-parse HEAD)" --output hosted-evidence
       - uses: actions/upload-artifact@v4
         if: always()
         with:
