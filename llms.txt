@@ -1,0 +1,28 @@
+# Quantum Learning Dissipation
+
+This repository studies causal processing of identical unknown pure qubits with all controller records restored or charged. In an ideal mean-work model, optimal classical-controller work deficit is Theta((ln N)^2), while a coherent register with ceil(log2(N+1)) qubits attains ln(N+1), in units of k_B T.
+
+## Read the story
+- README.md: question, main bounds, interpretation, scope, and contact.
+- science/README.md: connected reading route.
+- science/MODEL.md: source, causal cuts, allowed resources, Bayes/minimax quantifiers, and thermodynamic convention.
+- science/results.md: exact finite bounds and what is not claimed.
+
+## Inspect proofs
+- science/classical_lower.md: inherited Haar posterior, entropy lower bound, and controller-entropy telescope.
+- science/learner.md: explicit centered unbiased estimator, exact conditional variance, and uniform expected-risk induction.
+- science/work_cycle.md: feedback extraction, state-independent cross-entropy erasure, random-seed return, and finite-horizon approximation.
+- science/coherent.md: sequential symmetric-state compression and the charged final reset.
+
+## Attribution and learning
+- references/PRIORITY.md: closest sources, inherited ingredients, consequential differences, and coverage limits.
+- references/references.bib: structured bibliography.
+- learning/WATROUS_BRIDGE.md: Watrous (2018) source-to-project bridge and worked examples.
+- learning/MILESTONES.md: exactly 30 learner-independent understanding targets.
+
+## Reproduce
+- verification/README.md: commands, results, and limits.
+- verification/PLAN.md: claim-to-evidence map.
+- verification/check_science.py: deterministic finite checks and optional seeded simulation.
+
+Do not turn expected-risk bounds into high-probability claims; pure-state assumptions into noisy-source guarantees; ideal mean work into finite-power or entropy-bearing-battery performance; sufficient coherent memory into a minimum-memory theorem; or matching orders into optimal leading constants. The posterior identity and coherent Haar entropy benchmark are prior results. Numerical checks do not certify proofs, novelty, or hosted rendering.

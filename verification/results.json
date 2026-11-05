@@ -1,0 +1,29 @@
+{
+  "exact_checks": {
+    "conditional_cases": 640,
+    "max_mean_error": 1.866035648955266e-14,
+    "max_relative_variance_error": 8.41886592770666e-15,
+    "max_isometry_error": 4.440892098500626e-16,
+    "max_compression_error": 3.1580872418707985e-16,
+    "max_haar_average_error": 3.0818665290214484e-15
+  },
+  "status": "passed",
+  "scope": "Finite algebraic and quadrature checks; mathematical proofs are separate.",
+  "simulation": {
+    "N": 4096,
+    "runs": 3000,
+    "seed": 1982,
+    "snapshots": [
+      {"t": 1, "mse": 12.79301088504175, "mse_bound": 21.0, "measurement_infidelity": 0.49381954826061086, "regret_mean": 0.49381954826061086, "cross_entropy_loss_mean": 0.6931471805599454, "loss_standard_error": 2.1816057853215393e-18},
+      {"t": 2, "mse": 5.804392424745883, "mse_bound": 10.5, "measurement_infidelity": 0.38773362646854864, "regret_mean": 0.8815531747291595, "cross_entropy_loss_mean": 1.3862943611198908, "loss_standard_error": 4.631287862901122e-18},
+      {"t": 16, "mse": 0.526779957936438, "mse_bound": 1.3125, "measurement_infidelity": 0.22521280176555517, "regret_mean": 4.688277536038363, "cross_entropy_loss_mean": 11.090354888959126, "loss_standard_error": 2.6185129923331202e-17},
+      {"t": 64, "mse": 0.09915627765913172, "mse_bound": 0.328125, "measurement_infidelity": 0.15891455603972754, "regret_mean": 13.193602110950131, "cross_entropy_loss_mean": 44.361419555836505, "loss_standard_error": 1.4155860319129842e-16},
+      {"t": 128, "mse": 0.04439388754695657, "mse_bound": 0.1640625, "measurement_infidelity": 0.0741881844900918, "regret_mean": 20.030180810049604, "cross_entropy_loss_mean": 80.02737941235723, "loss_standard_error": 0.005366127105998665},
+      {"t": 512, "mse": 0.009477835256937135, "mse_bound": 0.041015625, "measurement_infidelity": 0.018210548679552966, "regret_mean": 33.01453497934183, "cross_entropy_loss_mean": 159.84366141183457, "loss_standard_error": 0.044928231035519316},
+      {"t": 1024, "mse": 0.004561560326600054, "mse_bound": 0.0205078125, "measurement_infidelity": 0.008962861574885354, "regret_mean": 39.381358100206754, "cross_entropy_loss_mean": 205.31240806094166, "loss_standard_error": 0.0721452165563301},
+      {"t": 2048, "mse": 0.0022629037294769846, "mse_bound": 0.01025390625, "measurement_infidelity": 0.004385937154470986, "regret_mean": 45.72306729653753, "cross_entropy_loss_mean": 254.91957528060442, "loss_standard_error": 0.10550949264929935},
+      {"t": 4096, "mse": 0.0011315376622207066, "mse_bound": 0.005126953125, "measurement_infidelity": 0.0022421210545140106, "regret_mean": 52.06509254275395, "cross_entropy_loss_mean": 308.83192120546096, "loss_standard_error": 0.1436759068670632}
+    ],
+    "scope": "Monte Carlo diagnostics, not a universal guarantee or a proof."
+  }
+}
